@@ -2,6 +2,10 @@
 
 This application demonstrates a collaborative AI framework where multiple specialized AI agents work together to analyze a proposal, discuss their findings, and reach a synthesized conclusion. The entire process is visualized in a real-time dashboard interface.
 
+## Notice(September 2025)
+
+**Please be aware that the Agent Discussion Function (QA with Agents) is still under development and is currently unstable. Therefore, we do not recommend using it at this time.**
+
 ## How It Works: The Overall Flow
 
 The application operates in a sequential, multi-phase process orchestrated by the main `App.tsx` component after a user uploads a proposal.
