@@ -34,10 +34,6 @@ The application operates in a sequential, multi-phase process orchestrated by th
 7.  **UI Rendering**: The UI, built with React and TailwindCSS, reactively updates throughout this entire process, showing loading states for agents that are "thinking" and displaying the results in various dashboard components as they become available.
 
 ---
-## Deprecated Folders
-
-**The `data` and `tools` directories are obsolete and no longer used by the application. They can be safely deleted.** Their functionality was replaced by the `Proposal Information Summarize Agent` which fetches live data.
----
 
 ## How to Modify Agents & Behavior
 
