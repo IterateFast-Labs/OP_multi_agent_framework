@@ -60,30 +60,6 @@ This is the primary file for controlling AI behavior. Each agent has an entry wi
 
 ---
 
-## How to Run This Code
+## How to Run This Code in Local setup
 
-This project is designed to run in a browser-based environment with minimal setup.
-
-### Prerequisites
-
-*   A modern web browser (e.g., Chrome, Firefox).
-*   A Google Gemini API Key.
-
-### 1. Set Up Environment Variable
-
-The application requires a Google Gemini API key to function. This key must be provided as an environment variable named `API_KEY`.
-
-In your development environment (e.g., a cloud IDE like Replit or CodeSandbox), find the section for managing secrets or environment variables and add a new secret:
-
-*   **Key**: `API_KEY`
-*   **Value**: `Your-Google-Gemini-API-Key`
-
-The application (`services/geminiService.ts`) is hardcoded to read this key from `process.env.API_KEY`.
-
-### 2. Installation
-
-No installation step (like `npm install`) is required. The project uses an `importmap` in `index.html` to load all dependencies (React, Recharts, etc.) directly from a CDN (`esm.sh`).
-
-### 3. Running the Application
-
-Simply open the application in your development environment's web preview or run the `index.html` file. Then, upload a proposal JSON file to start the simulation.
+[Local Setup Link](https://github.com/IterateFast-Labs/OP_multi_agent_framework/blob/main/LOCAL_SETUP.md)
