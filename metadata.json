@@ -1,0 +1,6 @@
+{
+  "name": "Copy of AI Multi-Agent Decision Framework",
+  "description": "A web application that visualizes a collaborative AI analysis and decision-making process. Multiple AI agents with different specializations analyze a proposal, discuss their findings, and reach a synthesized conclusion.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

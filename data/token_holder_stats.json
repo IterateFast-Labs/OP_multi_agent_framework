@@ -1,0 +1,12 @@
+
+{
+  "id": "token_holder_stats",
+  "name": "Token Holder Statistics",
+  "data": {
+    "totalHolders": 150324,
+    "top10HolderPercentage": 18.5,
+    "top50HolderPercentage": 35.2,
+    "averageHoldingDurationDays": 254,
+    "whaleWallets": 88
+  }
+}

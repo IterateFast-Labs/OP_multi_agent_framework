@@ -1,0 +1,205 @@
+{
+  "framework_config": {
+    "iterations": 5,
+    "seed": null,
+    "temperature": 1.0,
+    "description": "Framework configuration settings - iterations: number of expert discussion iterations to run, seed: random seed for reproducible results (null for random), temperature: LLM temperature setting (0.0 for deterministic, higher values for more creativity)"
+  },
+  "proposal_classification_agent": {
+    "id": "proposal_classification_agent",
+    "name": "Proposal Classification Agent",
+    "description": "Analyzes and classifies governance proposals according to Optimism's established framework.",
+    "model": "gemini-2.5-flash",
+    "prompt": "Analyze the following governance proposal: '{proposal_info}'\n\nUsing the Optimism Governance Framework below, classify this proposal:\n\n| Proposal Type | Description | Proposer | Approving Parties | Voting Type | Approval Threshold | Veto | Veto Threshold |\n|---------------|-------------|----------|-------------------|-------------|-------------------|------|----------------|\n| Maintenance Upgrade Proposals | Protocol maintenance for network operations continuity (L1 hard forks, bugfixes). Must not materially change protocol behavior for end users, infra providers, or governors. | Permissionless | None | Optimistic approval | N/A | Stakeholder veto + Appeal | Dynamic threshold |\n| Protocol and Governor Upgrades | Scheduled changes to mainnet Optimism protocol or governance smart contracts. | Permissionless | Developer Advisory Board | Optimistic approval | N/A | Stakeholder veto + Appeal | Dynamic threshold |\n| Token Allocations | Token distributions within the Mission framework. | Budget Board | None | Optimistic approval | N/A | Single House veto | 20% |\n| Treasury Appropriations | OP spending/distribution beyond 30% of initial supply. | Foundation | Token House | Active approval | 51% | No veto | N/A |\n| Inflation | Changes to OP inflation rate (currently capped at 2% annually). | Permissionless | Token House | Active approval | 76% | Citizens' House veto | N/A |\n| Ratification | Governance document ratification. | Foundation | Either or Joint House | Active approval | 51% Single House, 60% Joint House | No veto | N/A |\n| Code of Conduct Violation | Enforcement actions for conduct/grant policy violations. | Enforcing party | Either House | Optimistic approval | N/A | Single House veto | 20% |\n| Persistent Structure Dissolution | Dissolution of structures not fulfilling their Charter. | Permissionless | Either or Joint House | Active approval | 51% Single House, 60% Joint House | No veto | N/A |\n| Representative Removal | Removal of Council, Board, Commission members for misconduct. | Permissionless | Either or Joint House | Active approval | 51% Single House, 60% Joint House | No veto | N/A |\n| Director Removal | Removal of Optimism Foundation directors. | Permissionless | Token House | Active approval | 76% | No veto | N/A |\n| Rights Protections | Changes to Foundation documents affecting OP holder rights. | Foundation | Token House | Active approval | 51% | No veto | N/A |\n| Sequencer ETH: Passive Management | Management of sequencer ETH in Collective treasury. | Foundation | Citizens' House | Active approval | 51% | No veto | N/A |\n| Elections | Electing representatives to governance bodies. | All qualified candidates | Either or Joint House | Approval voting | Approval voting | No veto | N/A |\n| Reflection Period | Experiments with new governance structures/processes. | Foundation | Either or Joint House | Active approval | 51% Single House, 60% Joint House | No veto | N/A |\n\nOutput format: 'Category: **[Category Name]**. Justification: [Clear explanation of why this proposal fits this category, citing specific elements from the proposal that match the category description].'"
+  },
+  "proposal_information_summarize_agent": {
+    "id": "proposal_information_summarize_agent",
+    "name": "Proposal Information Summarize Agent",
+    "description": "Extracts and structures key information from proposal content for expert analysis.",
+    "model": "gemini-2.5-flash",
+    "prompt": "Extract and summarize the following proposal content: '{url_content}'\n\nCreate a structured analysis focusing on:\n\n**Core Proposal Elements:**\n- Objective and scope\n- Implementation timeline and milestones\n- Resource requirements (financial, technical, human)\n- Success metrics and KPIs\n- Risk factors and mitigation strategies\n\n**Quantitative Data:**\n- Specific amounts (tokens, USD, percentages)\n- Duration and deadlines\n- Performance metrics\n- Budget allocations\n\n**Community Engagement:**\n- Discussion sentiment and key concerns\n- Support/opposition levels\n- Notable stakeholder positions\n- Unresolved questions or debates\n\nFormat as JSON with keys: 'proposal_summary' (core elements), 'quantitative_data' (all numbers and metrics), and 'community_sentiment' (discussion analysis). Ensure all monetary amounts, percentages, and timelines are precisely captured.",
+    "responseMimeType": "application/json"
+  },
+  "expert_1": {
+    "id": "expert_1",
+    "name": "Expert: Dr. Anya Sharma (Finance)",
+    "description": "Analyzes financial implications and tokenomics of governance proposals.",
+    "model": "gemini-2.5-pro",
+    "systemInstruction": "You are Dr. Anya Sharma, a DeFi finance expert specializing in tokenomics and treasury management. In governance proposal discussions, provide concise 2-3 sentence responses focusing on: financial sustainability, token economic impact, treasury implications, ROI analysis, and funding risks. Base your analysis on quantitative data when available and highlight critical financial concerns or opportunities. Maintain a data-driven, pragmatic perspective while considering both short-term costs and long-term value creation.",
+    "maxOutputTokens": 500,
+    "thinkingConfig": { "thinkingBudget": 200 }
+  },
+  "expert_2": {
+    "id": "expert_2",
+    "name": "Expert: Ben Carter (Technology)",
+    "description": "Evaluates technical feasibility and implementation risks of proposals.",
+    "model": "gemini-2.5-pro",
+    "systemInstruction": "You are Ben Carter, a blockchain CTO with expertise in smart contracts and protocol development. In governance discussions, provide focused 2-3 sentence responses covering: technical implementation complexity, security considerations, scalability impacts, integration challenges, and development timeline feasibility. Assess proposals based on engineering best practices, identify potential technical bottlenecks, and evaluate whether proposed solutions are technically sound and achievable within stated timeframes.",
+    "maxOutputTokens": 500,
+    "thinkingConfig": { "thinkingBudget": 200 }
+  },
+  "expert_3": {
+    "id": "expert_3",
+    "name": "Expert: Chloe Davis (Governance & Compliance)",
+    "description": "Assesses governance process compliance and stakeholder impact.",
+    "model": "gemini-2.5-pro",
+    "systemInstruction": "You are Chloe Davis, a Web3 governance and regulatory compliance expert. In proposal discussions, deliver concise 2-3 sentence responses addressing: governance process adherence, voting mechanism appropriateness, stakeholder representation fairness, precedent implications, and regulatory compliance risks. Evaluate whether proposals follow established governance frameworks, consider their impact on decentralization and community participation, and identify potential legal or compliance challenges.",
+    "maxOutputTokens": 500,
+    "thinkingConfig": { "thinkingBudget": 200 }
+  },
+  "final_decision_agent": {
+    "id": "final_decision_agent",
+    "name": "Feasibility Scoring Agent",
+    "description": "Performs feasibility scoring analysis 10 times to ensure robust evaluation.",
+    "model": "gemini-2.5-flash",
+    "systemInstruction": "You are a feasibility scoring agent that performs multiple independent scoring evaluations to ensure robust and reliable assessment.",
+    "prompt": "Given the following discussion transcript between experts:\n\n{expert_discussion_transcript}\n\nPerform ONE independent feasibility scoring evaluation. Assess the proposal based on:\n\n**Scoring Criteria:**\n1. **Evidence Quality**: How well-supported are the arguments with data and precedent?\n2. **Expert Consistency**: Do experts maintain logical consistency in their positions?\n3. **Risk Assessment**: How thoroughly are potential risks identified and evaluated?\n4. **Implementation Viability**: How realistic are the proposed solutions and timelines?\n5. **Stakeholder Impact**: How well does the analysis consider all affected parties?\n\n**Output Requirements:**\nProvide:\n- Overall feasibility score (0-100)\n- Brief rationale for the score\n- Key factors that influenced the assessment\n\nThis evaluation will be one of 10 independent assessments.",
+    "responseMimeType": "application/json",
+    "responseSchema": {
+      "type": "OBJECT",
+      "properties": {
+        "feasibilityScore": {
+          "type": "INTEGER",
+          "description": "Feasibility score from 0-100."
+        },
+        "rationale": {
+          "type": "STRING",
+          "description": "Brief rationale for the score."
+        },
+        "keyFactors": {
+          "type": "ARRAY",
+          "items": {
+            "type": "STRING"
+          },
+          "description": "Key factors that influenced the assessment."
+        }
+      },
+      "required": ["feasibilityScore", "rationale", "keyFactors"]
+    }
+  },
+  "framework_tracker_agent": {
+    "id": "framework_tracker_agent",
+    "name": "Framework Performance Tracker",
+    "description": "Tracks overall framework performance metrics including duration and token usage.",
+    "model": "gemini-2.5-flash",
+    "systemInstruction": "You are a performance tracking agent that monitors and analyzes framework execution metrics.",
+    "prompt": "Track and analyze the following framework execution data:\n\n{execution_data}\n\nCalculate and provide comprehensive performance metrics including:\n\n**Duration Metrics:**\n- Total execution time\n- Time per agent/stage\n- Bottleneck identification\n\n**Token Usage Metrics:**\n- Total input tokens across all agents\n- Total output tokens across all agents\n- Token usage per agent\n- Cost estimation (if applicable)\n\n**Efficiency Analysis:**\n- Tokens per minute\n- Agent utilization patterns\n- Performance recommendations\n\nProvide actionable insights for framework optimization.",
+    "responseMimeType": "application/json",
+    "responseSchema": {
+      "type": "OBJECT",
+      "properties": {
+        "duration": {
+          "type": "OBJECT",
+          "properties": {
+            "totalSeconds": {
+              "type": "NUMBER",
+              "description": "Total framework execution time in seconds."
+            },
+            "agentBreakdown": {
+              "type": "OBJECT",
+              "description": "Time spent per agent in seconds.",
+              "properties": {
+                "additionalProperties": {
+                  "type": "NUMBER"
+                }
+              }
+            },
+            "bottlenecks": {
+              "type": "ARRAY",
+              "items": {
+                "type": "STRING"
+              },
+              "description": "Identified performance bottlenecks."
+            }
+          },
+          "required": ["totalSeconds", "agentBreakdown"]
+        },
+        "tokenUsage": {
+          "type": "OBJECT",
+          "properties": {
+            "totalInputTokens": {
+              "type": "INTEGER",
+              "description": "Total input tokens used."
+            },
+            "totalOutputTokens": {
+              "type": "INTEGER",
+              "description": "Total output tokens generated."
+            },
+            "agentBreakdown": {
+              "type": "OBJECT",
+              "description": "Token usage breakdown per agent.",
+              "properties": {
+                "additionalProperties": {
+                  "type": "OBJECT",
+                  "properties": {
+                    "inputTokens": {
+                      "type": "INTEGER"
+                    },
+                    "outputTokens": {
+                      "type": "INTEGER"
+                    }
+                  }
+                }
+              }
+            },
+            "estimatedCost": {
+              "type": "NUMBER",
+              "description": "Estimated cost in USD if available."
+            }
+          },
+          "required": ["totalInputTokens", "totalOutputTokens", "agentBreakdown"]
+        },
+        "efficiency": {
+          "type": "OBJECT",
+          "properties": {
+            "tokensPerMinute": {
+              "type": "NUMBER",
+              "description": "Processing rate in tokens per minute."
+            },
+            "recommendations": {
+              "type": "ARRAY",
+              "items": {
+                "type": "STRING"
+              },
+              "description": "Performance optimization recommendations."
+            }
+          },
+          "required": ["tokensPerMinute", "recommendations"]
+        }
+      },
+      "required": ["duration", "tokenUsage", "efficiency"]
+    }
+  },
+  "prompt_update_agent": {
+    "id": "prompt_update_agent",
+    "name": "Prompt Update Agent",
+    "description": "Tracks how expert perspectives evolve through actual dialogue content and updates their contextual understanding.",
+    "model": "gemini-2.5-flash",
+    "systemInstruction": "You are a conversation analyst that tracks how expert thinking evolves through dialogue. Your task is to determine if an expert's core perspective has changed based on the conversation and, if so, to generate an updated instruction reflecting that change.",
+    "prompt": "Analyze this expert's thought evolution through their actual conversation:\n\n**Expert's Previous Context:**\n`{expert_instruction}`\n\n**User's Input:**\n`{user_question}`\n\n**Expert's Response:**\n`{expert_response}`\n\n**Analysis Focus:**\nExamine what the expert actually discussed:\n- What specific concerns did they raise?\n- What evidence or arguments did they consider?\n- How did they respond to the user's points?\n- What new information did they acknowledge?\n- Did their reasoning or priorities shift?\n\n**Look for these conversation patterns:**\n\n*Evidence of Change:*\n- \"That's a valid point about [specific issue]\"\n- \"I hadn't considered [specific factor]\"\n- \"Given this information about [X], my concern about [Y] is reduced\"\n- \"This changes my assessment of [specific aspect]\"\n- Shifting from absolute concerns to conditional ones\n- Acknowledging successful precedents or data\n\n*No Change Indicators:*\n- Restating the same concerns without modification\n- Adding new concerns without resolving previous ones\n- Hypothetical worries (\"what if...\") without engaging with provided evidence\n- Generic responses that don't address user's specific points\n\n**Update Criteria:**\nUpdate ONLY when the expert's response shows they have:\n1. Integrated new information into their analysis\n2. Resolved or modified a previously stated concern\n3. Acknowledged a point that changes their assessment approach\n4. Demonstrated evolved understanding of the proposal aspects\n\nBased on your analysis, decide if the expert's core instruction needs an update and provide the new instruction if it does. The new instruction should reference specific topics from the conversation and reflect their evolved understanding, not a generic role description. For example, if they were concerned about security but were satisfied by audit results, the new instruction should reflect that shift in focus.",
+    "responseMimeType": "application/json",
+    "responseSchema": {
+      "type": "OBJECT",
+      "properties": {
+        "update": {
+          "type": "BOOLEAN",
+          "description": "Whether the expert's instruction should be updated."
+        },
+        "newInstruction": {
+          "type": "STRING",
+          "description": "The new, updated instruction for the expert. This should only be present if 'update' is true."
+        }
+      },
+      "required": [
+        "update"
+      ]
+    }
+  },
+  "pdf_formatter_agent": {
+    "id": "pdf_formatter_agent",
+    "name": "PDF Formatting Agent",
+    "description": "Formats JSON data into a readable text summary for PDF reports.",
+    "model": "gemini-2.5-flash",
+    "prompt": "You are a report-writing assistant. Your task is to analyze the following structured JSON data and produce a concise, human-readable summary for a formal PDF report. The summary should be significantly shorter than the input data, focusing only on the most critical information.\n\n- Distill the 'Core Proposal Elements' into a brief 2-3 sentence overview.\n- Extract only the most essential 'Quantitative Data' (e.g., total budget, key deadlines), presenting them as a short list.\n- Summarize the 'Community Engagement' into 1-2 sentences capturing the overall sentiment and major concerns.\n\nUse clear headings for these summarized sections. Use bullet points for any lists. Ensure the entire output is professional, informative, and compact. Do NOT use any markdown syntax (like ** for bolding).\n\nAnalyze and summarize the following JSON content:\n\n{json_content}"
+  }
+}

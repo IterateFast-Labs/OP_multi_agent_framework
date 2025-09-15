@@ -1,0 +1,12 @@
+
+{
+  "id": "protocol_usage_data",
+  "name": "Protocol Usage Data (Last 90 days)",
+  "data": {
+    "dailyActiveUsers": 8500,
+    "totalVolumeUSD": 750000000,
+    "averageTransactionSizeUSD": 1250,
+    "newUsers": 12000,
+    "totalTransactions": 600000
+  }
+}
