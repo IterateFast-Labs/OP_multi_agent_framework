@@ -1,3 +1,4 @@
+//This feature is wip function. Very unstable
 import React, { useState, useRef, useEffect } from 'react';
 import { AgentOutput, ChatMessage, ExpertOpinion, SystemChatMessage, UserChatMessage } from '../types';
 import { BotIcon, BrainCircuitIcon, LoadingSpinner, SendIcon, UserIcon, MessageSquareIcon } from './icons';
